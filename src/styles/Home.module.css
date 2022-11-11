@@ -69,6 +69,9 @@
   margin:  1rem;
   max-width: fit-content;
 }
+.code span{
+  
+}
 
 .grid {
   display: flex;
@@ -118,6 +121,7 @@
   .grid {
     width: 100%;
     flex-direction: column;
+    margin:1rem
   }
   .title{
     font-size:2rem;
