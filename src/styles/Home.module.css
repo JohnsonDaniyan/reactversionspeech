@@ -1,14 +1,18 @@
 .container {
   padding: 0 2rem;
+  background-color: white;
 }
-
+body{
+  background-color: black;
+}
 .main {
+  background-color: white;
   max-height: 100vh; 
   height:100vh;
   box-sizing: border-box;
-  padding: 4rem 0;
   flex: 1;
-  display: flex;
+  display: flex; 
+  align-items: flex-start;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -126,6 +130,11 @@
   .title{
     font-size:2rem;
   }
+  .main{
+    
+  justify-content:flex-start;
+  
+  }
   .description {
     font-size:.8rem
   }
@@ -135,18 +144,5 @@
   .code{
     margin: 1rem auto;
     display: flex;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .card,
-  .footer {
-    border-color: #222;
-  }
-  .code {
-    background: #111;
-  }
-  .logo img {
-    filter: invert(1);
   }
 }

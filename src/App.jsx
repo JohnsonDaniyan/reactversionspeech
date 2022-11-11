@@ -189,12 +189,12 @@ const TextModal=(props)=>{
 
 
   return (
-    <div className="px-5 cursor-pointer">
+    <div className="px-5 cursor-pointer bg-white overflow-hidden">
       <div className="logo w-full absolute  h-fit text-center grid place-items-center">
       
       </div>
-      <img src={walking} alt="" className="absolute md:h-[200px]  h-[150px] bottom-0 grayscale " />
-      <img src={walking2} alt="" className="absolute md:h-[200px] h-[150px]  bottom-0 grayscale  right-0" />
+      <img src={walking} alt="" className="absolute md:h-[200px]  h-[100px] bottom-0 grayscale " />
+      <img src={walking2} alt="" className="absolute md:h-[200px] h-[100px]  bottom-0 grayscale  right-0" />
       <div className={`doesnotSup pointer-events-none w-screen h-screen absolute top-0 left-0 bg-black opacity-50 grid place-content-center ${browserSupportsSpeechRecognition?"hidden":"grid"}`}><h1 className='text-white text-5xl text-center font-bold'>Browser <br /> Does not support <br />STP</h1></div>
       <div onClick={()=>{
         SpeechRecognition.stopListening()
@@ -202,13 +202,13 @@ const TextModal=(props)=>{
       }} className={`hidder w-screen h-screen bg-black  absolute top-0 left-0 transition-opacity ${stillListening?"opacity-40 pointer-events-auto":"opacity-0 pointer-events-none"}`}></div>
       <TextModal className="z-10" listening={listening} transcript={transcript} stillListening={stillListening} />
     <main  className={styles.main}> 
-        <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 p-5 transition-colors"><span className='icon-eye'></span><img src={logoBlack} className="hidden md:block my-1 w-[70px] " alt="Innov8Logo" /></div> 
+        <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 p-1 md:p-5 transition-colors"><span className='icon-eye'></span><img src={logoBlack} className="hidden md:block my-1 w-[70px] " alt="Innov8Logo" /></div> 
         <h1 className={styles.title}>
         <p className='text-xl flex flex-col gap-2 items-center'><img src={logoBlack} className="md:hidden my-1 w-[70px] " alt="Innov8Logo" />Research for Impact <br /><span className='text-sm'>(R4I) </span>
 </p> 
         Vibrotactile morse code Application
         </h1>
-        <p className='text-center my-1 text-sm md:text-base md:my-5'>
+        <p className='text-center my-1 text-sm md:text-base md:my-5 hidden md:block'>
           R4I prototype application to demonstrate <br /> vibrotactile communication 
         </p>
          
