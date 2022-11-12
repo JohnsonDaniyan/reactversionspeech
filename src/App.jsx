@@ -128,9 +128,9 @@ function App() {
   //   }
   // },[]) 
   // const transcript = "hello"
-  let transcript = "hello"
+  // let transcript = "hello"
   const {
-    // transcript,
+    transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
