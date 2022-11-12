@@ -9,12 +9,46 @@ import wheel from './images/wheel.svg'
 import walking from './images/walking.svg'
 import walking2 from './images/walking2.svg'
 
-function App() {
+var morseCode = {
+  A: ".-",
+  B: "-...", 
+  C: "-.-.",
+  D: "-..",
+  E: ".",
+  F: "..-.",
+  G: "--.",
+  H: "....",
+  I: "..",
+  J: ".---",
+  K: "-.-",
+  L: ".-..",
+  M: "--",
+  N: "-.",
+  O: "---",
+  P: ".--.",
+  Q: "--.-",
+  R: ".-.",
+  S: "...",
+  T: "-",
+  U: "..-",
+  V: "...-",
+  W: ".--",
+  X: "-..-",
+  Y: "-.--",
+  Z: "--..",
+  ".":"",
+  ",":"",
+  ' ':""
+};
 
+function App() {
+  
   const [stillListening, setStillListening] = useState(false);
   const [tries, setTries] = useState(0);
-  // const [thecode, setCode] =useState('')
-  const [themorseCode, setMorseCode] =useState('')
+  const [thecode, setCode] =useState('')
+  const [morseC, setMorseC] =useState('')
+  const [pattern,setPattern] = useState([])
+  const [transArray, setTransArray] =useState([])
   useEffect(()=>{
     
     navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
@@ -25,64 +59,111 @@ function App() {
     navigator.vibrate(1000); 
     }
   },[]) 
-  const transcript = "hello there"
+  // const transcript = "hellothere"
   const {
-    // transcript,
+    transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
   
   useEffect(()=>{
-    // if(transcript!==""&&!listening){
-    //   start(transcript)
-    // }
-  },[transcript,listening])
+    if(transcript!==""&&!listening){
+      // start(transcript)
+      setTransArray(transcript.split(''))
+      
+      // console.log({transArray})
+    }
+
+  },[transcript,listening]) 
+
+  // useEffect(()=>{
+  //   transArray.forEach((item, i) => setTimeout(
+  //     () => setCode(item),
+  //     5000, // 5000, 10000, 15000
+  //   ));
+
+  // },[transArray])
+
+
+// console.log({transArray})
+const [mediaItem, setMediaItem] = useState(transArray[0]);
+const [index, setIndex] = useState(0);
+
+useEffect(() => {
+  console.log({transArray})
+  const timerId = setInterval(
+    () => {
+      setIndex((i) => (i + 1) % transArray.length)
+      
+      
+    },
+    5000
+  );
+  return () => clearInterval(timerId);
+}, [transArray]);
+
+let doIt=(x)=>{
+  let p =[];
+  console.log({x})
+  if(x === undefined){return 0}else{
+  let y = morseCode[x.toUpperCase()].split('').join(' ').split('')
+  y.map((i)=> {
+    switch (i) {
+      case '.':
+        p.push(100);
+        break
+
+      case '-':
+        p.push(300);
+        break
+
+      case ' ':
+        p.push(300);
+        break
+      default:
+        p.push(0)
+        break
+
+    }
+  });
+}
+setPattern(p)
+  return p
+}
+useEffect(() => {
+  if(transArray.length>1){
+  setMediaItem(transArray[index]);
+  doIt(transArray[index])
+  // console.log(transArray[index])
+  }
+}, [index,transArray]);
+
+
+useEffect(()=>{
+  console.log(mediaItem)
+  if(mediaItem!== undefined){
   
+  }
+},[])
 
+let reset=()=>{
+  setTransArray([]);
+  setPattern([]);
+  SpeechRecognition.resetTranscript()
+}
 
-
-  var info, morseCode, playMorseCode, playMorseStr, sleep, start;
+  var info, playMorseCode, playMorseStr, sleep, start;
   
     info = function(msg) {
       console.log(msg);
     };
   
-    morseCode = {
-      A: ".-",
-      B: "-...", 
-      C: "-.-.",
-      D: "-..",
-      E: ".",
-      F: "..-.",
-      G: "--.",
-      H: "....",
-      I: "..",
-      J: ".---",
-      K: "-.-",
-      L: ".-..",
-      M: "--",
-      N: "-.",
-      O: "---",
-      P: ".--.",
-      Q: "--.-",
-      R: ".-.",
-      S: "...",
-      T: "-",
-      U: "..-",
-      V: "...-",
-      W: ".--",
-      X: "-..-",
-      Y: "-.--",
-      Z: "--.."
-    };
-    console.log(morseCode["A"].split('').join(' ').split(''))
+   
+    // console.log(morseCode["A"].split('').join(' ').split(''))
     sleep = function(msec) {
-      return new Promise(function(resolve) {
         return setTimeout(function() {
-          return resolve();
         }, msec); 
-      });
     }; 
   
     playMorseStr = function(str) {
@@ -140,14 +221,13 @@ function App() {
       });
     };
   
-      console.log("start");
-      if (typeof (typeof navigator !== "undefined" && navigator !== null ? navigator.vibrate : void 0) !== 'function') {
-        console.log("noavigator.vibrate not found");
-      }
-      console.log("navigator.vibrate found");
+//       console.log("start");
+//       if (typeof (typeof navigator !== "undefined" && navigator !== null ? navigator.vibrate : void 0) !== 'function') {
+//         console.log("noavigator.vibrate not found");
+//       }
+//       console.log("navigator.vibrate found");
 
-console.log({transcript})
-
+// console.log({transcript})
 const ListenAlert=(props)=>{
   return(
     <p className={`p-2 text-white text-xs md:p-5 md:text-base  ${props.listening?"bg-green-500":"bg-red-500"}`}>Microphone: {props.listening?"ON":"OFF"}</p>
@@ -175,8 +255,13 @@ const TextModal=(props)=>{
           <p className=' bg-neutral-300 w-fit p-3 pb-5 rounded-sm'>
           {props.transcript}
           </p>
-          {
-          }
+          <p>
+         {mediaItem?.toUpperCase()}
+         </p>
+         <p>
+         {morseCode[mediaItem?.toUpperCase()]}
+         </p>
+         <p className=' text-sm' >Pattern: {pattern.map((char)=>{if(char===100){return(<p className=' text-xs'>Low</p>)}else{return(<p className=' text-xs'>High</p>)}})}</p>
           
             {/* {!listening && transcript!==''?start(props.transcript):null} */}
           </div>
