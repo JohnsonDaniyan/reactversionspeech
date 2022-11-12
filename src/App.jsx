@@ -15,37 +15,11 @@ function App() {
   const [tries, setTries] = useState(0);
   const [thecode, setCode] =useState('')
   const [themorseCode, setMorseCode] =useState('')
-  useEffect(()=>{
-    
-    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-     
-    if (navigator.vibrate) {
-	    // vibration API supported
-      console.log("suported")
-    navigator.vibrate(1000); 
-    }
-  },[]) 
-  // const transcript = "hello"
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
-  
-  useEffect(()=>{
-    if(transcript!==""&&!listening){
-      start(transcript)
-    }
-  },[transcript,listening])
-  
-
-
-
+  const [cont, setCont] = useState(false)
   var info, morseCode, playMorseCode, playMorseStr, sleep, start;
   
     info = function(msg) {
-      console.log(msg);
+      //console.log(msg);
     };
   
     morseCode = {
@@ -76,7 +50,7 @@ function App() {
       Y: "-.--",
       Z: "--.."
     };
-    console.log(morseCode["A"].split('').join(' ').split(''))
+    // console.log(morseCode["A"].split('').join(' ').split(''))
     sleep = function(msec) {
       return new Promise(function(resolve) {
         return setTimeout(function() {
@@ -128,10 +102,10 @@ function App() {
     };
   
     start = function(str) {
-      
+        console.log("running start decode")
       info("play \"" + str + "\"");
       return playMorseStr(str).then(function() {
-        return sleep(1000);
+        return sleep(3000);
       }).then(function() {
         return start(str);
       })["catch"](function(err) {
@@ -141,30 +115,70 @@ function App() {
         }); 
       });
     };
-  
-      console.log("start");
-      if (typeof (typeof navigator !== "undefined" && navigator !== null ? navigator.vibrate : void 0) !== 'function') {
-        console.log("noavigator.vibrate not found");
-      }
-      console.log("navigator.vibrate found");
 
-console.log({transcript})
+
+  // useEffect(()=>{
+    
+  //   navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+     
+  //   if (navigator.vibrate) {
+	//     // vibration API supported
+  //     console.log("suported")
+  //   navigator.vibrate(1000); 
+  //   }
+  // },[]) 
+  // const transcript = "hello"
+  let transcript = "hello"
+  const {
+    // transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+  
+  useEffect(()=>{
+    
+    console.log({cont})
+    console.log({listening})
+    console.log({stillListening})
+    if(listening){
+      setCont(true)
+    }
+    if(transcript!==""&&!listening&&cont){
+      console.log("running now")
+      start(transcript)
+    }else{
+      
+    }
+  },[transcript,listening,cont,stillListening])
+  
+
+
+
+  
+      // if (typeof (typeof navigator !== "undefined" && navigator !== null ? navigator.vibrate : void 0) !== 'function') {
+      //   console.log("noavigator.vibrate not found");
+      // }
+      // console.log("navigator.vibrate found");
+
+// console.log({transcript})
 
 const ListenAlert=(props)=>{
   return(
-    <p className={`p-2 text-white text-xs md:p-5 md:text-base  ${props.listening?"bg-green-500":"bg-red-500"}`}>Microphone: {props.listening?"ON":"OFF"}</p>
+    <p className={`p-2 text-white text-xs w-fit md:p-5 md:text-base  ${props.listening?"bg-green-500":"bg-red-500"}`}>Microphone: {props.listening?"ON":"OFF"}</p>
   )
 }
 
 const TextModal=(props)=>{
   return(
     <div onClick={()=>{
-      SpeechRecognition.stopListening()
+      SpeechRecognition.stopListening();
+      console.log({cont})
       setStillListening(false)
-    }} className={`textModal mt-10 max-w-screen w-screen h-[500px] absolute top-0 left-0   transition-opacity ${props.stillListening?"opacity-1 pointer-events-auto delay-500":"opacity-0 pointer-events-none delay-0"}`}>
-       <div className="textcontent  rounded-xl border-neutral-500 border-2 z-10 bg-white w-auto h-full box-border text-2xl md:text-5xl m-10 text-center p-10">
+    }} className={`textModal mt-10 max-w-screen w-screen h-[500px] absolute top-0 left-0   transition-opacity ${props.stillListening || props.listening?"opacity-1 pointer-events-auto delay-500":"opacity-0 pointer-events-none delay-0"}`}>
+       <div className={`textcontent  rounded-xl  border-4 z-10 bg-white w-auto h-full box-border text-2xl md:text-5xl m-10 text-center p-10 ${props.listening?"border-green-500":"border-red-500"}`}>
         <div className="text ">
-          <p className='text-lg'>
+          <p className='text-lg absolute left:1/2 mx-auto'>
             { 
             props.listening ?
               "Listening...":""
@@ -175,11 +189,16 @@ const TextModal=(props)=>{
             }   
           </p>
           <p className=' bg-neutral-300 w-fit p-3 pb-5 rounded-sm'>
-          {props.transcript}
+            {props.transcript}
           </p>
-          {thecode}
-        <br />
-        {themorseCode}
+          <div className="w-fill md:flex md:text-8xl">
+          <p className='flex-1'>
+            {thecode}
+          </p>
+          <p className='flex-1'>
+            {themorseCode}
+          </p>
+          </div>
             {/* {!listening && transcript!==''?start(props.transcript):null} */}
           </div>
           </div> 
@@ -198,13 +217,15 @@ const TextModal=(props)=>{
       <div className={`doesnotSup pointer-events-none w-screen h-screen absolute top-0 left-0 bg-black opacity-50 grid place-content-center ${browserSupportsSpeechRecognition?"hidden":"grid"}`}><h1 className='text-white text-5xl text-center font-bold'>Browser <br /> Does not support <br />STP</h1></div>
       <div onClick={()=>{
         SpeechRecognition.stopListening()
+        
+        setCont(false)
         setStillListening(false)
       }} className={`hidder w-screen h-screen bg-black  absolute top-0 left-0 transition-opacity ${stillListening?"opacity-40 pointer-events-auto":"opacity-0 pointer-events-none"}`}></div>
       <TextModal className="z-10" listening={listening} transcript={transcript} stillListening={stillListening} />
     <main  className={styles.main}> 
         <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 p-1 md:p-5 transition-colors"><span className='icon-eye'></span><img src={logoBlack} className="hidden md:block my-1 w-[70px] " alt="Innov8Logo" /></div> 
         <h1 className={styles.title}>
-        <p className='text-xl flex flex-col gap-2 items-center'><img src={logoBlack} className="md:hidden my-1 w-[70px] " alt="Innov8Logo" />Research for Impact <br /><span className='text-sm'>(R4I) </span>
+        <p className='text-xl flex flex-col gap-2 items-center mt-5 md:mt-0'><img src={logoBlack} className="md:hidden my-1 w-[70px] " alt="Innov8Logo" />Research for Impact <br /><span className='text-sm'>(R4I) </span>
 </p> 
         Vibrotactile morse code Application
         </h1>
@@ -239,16 +260,15 @@ const TextModal=(props)=>{
             }}}  
             className={`
             m-1 p-14 text-center border-neutral-300 text-neutral-300 border-2 bg-white
-            rounded-full transition-all duration-1000 hover:bg-neutral-100
-             hover:text-neutral-600 cursor-pointer translate-y z-10  
-             ${listening?" bg-green-500 hover:bg-green-500 border-black -translate-y-10":"translate-y-0"
+            rounded-full transition-all duration-1000  cursor-pointer translate-y z-10  
+             ${listening?" bg-green-500 hover:bg-green-500 border-black -translate-y-10":"translate-y-0 "
              }`}>
            <span  className={`  icon-microphone text-7xl ${listening?"text-white":""}`}></span>
            
           </div>
 
         </div>
-        <div className="response absolute bottom-0 text-center">
+        <div className="response absolute top-0 text-center">
         <ListenAlert listening={listening}/>
         <p>{transcript}</p>
        
