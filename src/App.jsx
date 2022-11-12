@@ -13,7 +13,7 @@ function App() {
 
   const [stillListening, setStillListening] = useState(false);
   const [tries, setTries] = useState(0);
-  const [thecode, setCode] =useState('')
+  // const [thecode, setCode] =useState('')
   const [themorseCode, setMorseCode] =useState('')
   useEffect(()=>{
     
@@ -25,18 +25,18 @@ function App() {
     navigator.vibrate(1000); 
     }
   },[]) 
-  // const transcript = "hello"
+  const transcript = "hello there"
   const {
-    transcript,
+    // transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
   
   useEffect(()=>{
-    if(transcript!==""&&!listening){
-      start(transcript)
-    }
+    // if(transcript!==""&&!listening){
+    //   start(transcript)
+    // }
   },[transcript,listening])
   
 
@@ -116,8 +116,6 @@ function App() {
         });
         // console.log({pattern})
         info(code + ": " + morseCode[code]);
-        setCode(code);
-        setMorseCode(morseCode[code])
         navigator.vibrate(pattern);
         return setTimeout(function() {
           return resolve();
@@ -177,9 +175,9 @@ const TextModal=(props)=>{
           <p className=' bg-neutral-300 w-fit p-3 pb-5 rounded-sm'>
           {props.transcript}
           </p>
-          {thecode}
-        <br />
-        {themorseCode}
+          {
+          }
+          
             {/* {!listening && transcript!==''?start(props.transcript):null} */}
           </div>
           </div> 
