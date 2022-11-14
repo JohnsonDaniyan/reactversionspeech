@@ -240,7 +240,7 @@ const TextModal=(props)=>{
       SpeechRecognition.stopListening()
       setStillListening(false)
     }} className={`textModal mt-10 max-w-screen w-screen h-[500px] absolute top-0 left-0   transition-opacity ${props.stillListening?"opacity-1 pointer-events-auto delay-500":"opacity-0 pointer-events-none delay-0"}`}>
-       <div className="textcontent  rounded-xl border-neutral-500 border-2 z-10 bg-white w-auto h-full box-border text-2xl md:text-5xl m-10 text-center p-10">
+       <div className="textcontent  rounded-[2.5rem] border-neutral-500 border-2 z-10 bg-white w-auto h-full box-border text-2xl md:text-5xl m-10 text-center p-10">
         <div className="text ">
           <p className='text-lg'>
             { 
@@ -278,16 +278,29 @@ const TextModal=(props)=>{
       </div>
       <img src={walking} alt="" className="absolute md:h-[200px]  h-[100px] bottom-0 grayscale " />
       <img src={walking2} alt="" className="absolute md:h-[200px] h-[100px]  bottom-0 grayscale  right-0" />
-      <div className={`doesnotSup pointer-events-none w-screen h-screen absolute top-0 left-0 bg-black opacity-50 grid place-content-center ${browserSupportsSpeechRecognition?"hidden":"grid"}`}><h1 className='text-white text-5xl text-center font-bold'>Browser <br /> Does not support <br />STP</h1></div>
+      <div className={`doesnotSup pointer-events-none w-screen h-screen absolute top-0 left-0 bg-black opacity-50 grid place-content-center ${browserSupportsSpeechRecognition?"hidden":"grid"}`}>
+        <h1 className='text-white text-5xl text-center font-bold'>Browser <br /> Does not support <br />STP</h1>
+      </div>
       <div onClick={()=>{
         SpeechRecognition.stopListening()
         setStillListening(false)
       }} className={`hidder w-screen h-screen bg-black  absolute top-0 left-0 transition-opacity ${stillListening?"opacity-40 pointer-events-auto":"opacity-0 pointer-events-none"}`}></div>
       <TextModal className="z-10" listening={listening} transcript={transcript} stillListening={stillListening} />
-    <main  className={styles.main}> 
-        <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 p-1 md:p-5 transition-colors"><span className='icon-eye'></span><img src={logoBlack} className="hidden md:block my-1 w-[70px] " alt="Innov8Logo" /></div> 
+      <main  className={styles.main}> 
+        <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 p-1 md:p-5 transition-colors">
+          
+          <span className='icon-eye flex-1'></span>
+          
+          <ListenAlert listening={listening}/>
+          
+          <div className="imgcont flex-1 flex justify-end">
+            <img src={logoBlack} className=" my-1 w-[50px] md:w-[100px] " alt="Innov8Logo" />
+          </div>
+          
+        
+        </div> 
         <h1 className={styles.title}>
-        <p className='text-xl flex flex-col gap-2 items-center'><img src={logoBlack} className="md:hidden my-1 w-[70px] " alt="Innov8Logo" />Research for Impact <br /><span className='text-sm'>(R4I) </span>
+        <p className='text-sm flex flex-col gap-2 items-center font-normal'>Research for Impact <br /><span className='text-sm'>(R4I) </span>
 </p> 
         Vibrotactile morse code Application
         </h1>
@@ -296,8 +309,8 @@ const TextModal=(props)=>{
         </p>
          
         <p className={styles.description}> 
-          <span className='md:inline inline-block my-2 md:m-0 '>
-            <span className='block md:inline-block mt-4 md:mt-0'>
+          <span className='md:inline inline-block '>
+            <span className='block md:inline-block'>
             Tap anywhere on the  
             </span>
           </span>
@@ -306,7 +319,7 @@ const TextModal=(props)=>{
           <span className=''>
           screen to enable Microphone
           </span>
-          <code className={styles.code}><span className="icon-microphone"></span></code>
+          <code className={styles.code}><span className="icon-microphone" ></span></code>
           </span>
         </p>  
 
@@ -321,7 +334,7 @@ const TextModal=(props)=>{
               SpeechRecognition.startListening()
             }}}  
             className={`
-            m-1 p-14 text-center border-neutral-300 text-neutral-300 border-2 bg-white
+            m-1 p-14 text-center border-neutral-300 text-neutral-300 border-[.7rem] bg-white
             rounded-full transition-all duration-1000 hover:bg-neutral-100
              hover:text-neutral-600 cursor-pointer translate-y z-10  
              ${listening?" bg-green-500 hover:bg-green-500 border-black -translate-y-10":"translate-y-0"
@@ -332,7 +345,7 @@ const TextModal=(props)=>{
 
         </div>
         <div className="response absolute bottom-0 text-center">
-        <ListenAlert listening={listening}/>
+        
         <p>{transcript}</p>
        
       </div>

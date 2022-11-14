@@ -12,10 +12,11 @@ body{
   box-sizing: border-box;
   flex: 1;
   display: flex; 
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 5rem 0;
 }
 
 .footer {
@@ -61,10 +62,15 @@ body{
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
+  background-color: #F6F6F6;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  margin-top: 2rem ;
 }
 
 .code {
-  background: #e2e2e2;
+  background: #838383;
+  color: white;
   border-radius: 5px;
   padding: 0.5rem;
   font-size: 1.1rem;
@@ -132,7 +138,6 @@ body{
   }
   .main{
     
-  justify-content:flex-start;
   
   }
   .description {
