@@ -5,7 +5,8 @@ import { Promise } from 'bluebird';
 import { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import logoBlack from './images/blackLogo.png'
-import wheel from './images/wheel.svg'
+import innov8 from './images/innov8Logo.png'
+import tetfund from './images/tetfundLogo.png'
 import walking from './images/walking.svg'
 import walking2 from './images/walking2.svg'
 
@@ -230,7 +231,7 @@ let reset=()=>{
 // console.log({transcript})
 const ListenAlert=(props)=>{
   return(
-    <p className={`p-2 text-white text-xs md:p-5 md:text-base  ${props.listening?"bg-green-500":"bg-red-500"}`}>Microphone: {props.listening?"ON":"OFF"}</p>
+    <p className={`p-2 text-white text-xs md:p-5 md:text-base z-20 ${props.listening?"bg-green-500":"bg-red-500"}`}>Microphone: {props.listening?"ON":"OFF"}</p>
   )
 }
 
@@ -349,8 +350,10 @@ const TextModal=(props)=>{
        
       </div>
       </main>
-      <footer className='max-h-[5rem] h-[5rem] bg-ground flex'>
-        hello
+      <footer id="footer" className='max-h-[5rem] h-[5rem] justify-between flex px-10'>
+        
+        <img className='w-20 self-center' src={innov8} alt="" />
+        <img className='w-20 self-center' src={tetfund} alt="" />
       </footer>
       
       </div>
