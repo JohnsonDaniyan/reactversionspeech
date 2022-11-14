@@ -272,7 +272,7 @@ const TextModal=(props)=>{
 
 
   return (
-    <div className=" cursor-pointer bg-white overflow-hidden flex flex-col max-h-screen h-screen">
+    <div className=" cursor-pointer bg-white overflow-hidden flex flex-col max-h-screen h-screen relative">
       
       
       <div className={`doesnotSup pointer-events-none w-screen h-screen absolute top-0 left-0 bg-black opacity-50 grid place-content-center ${browserSupportsSpeechRecognition?"hidden":"grid"}`}>
