@@ -334,9 +334,9 @@ const TextModal=(props)=>{
             }}}  
             className={`
             m-[] p-14 text-center  text-ground border-[.5rem] 
-            rounded-full transition-all duration-500 hover:bg-neutral-100
-             hover:text-ground cursor-pointer translate-y z-10  
-             ${listening?" bg-mygreen border-black -translate-y-10":"translate-y-0 bg-white border-ground"
+            rounded-full transition-all duration-500 
+              cursor-pointer translate-y z-10  
+             ${listening?" bg-mygreen border-black -translate-y-10":"hover:text-ground hover:bg-neutral-100 translate-y-0 bg-white border-ground"
              }`}>
            <span  className={`  icon-microphone text-7xl ${listening?"text-white":""}`}></span>
            
