@@ -50,6 +50,44 @@ function App() {
   const [morseC, setMorseC] =useState('')
   const [pattern,setPattern] = useState([])
   const [transArray, setTransArray] =useState([])
+  let ctx = new (window.AudioContext || window.webkitAudioContext)();
+  // var ctx = new AudioContext();
+  var dot = 1.2 / 15; 
+
+  function playSound(x){
+    var t = ctx.currentTime;
+
+    var oscillator = ctx.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.value = 600;
+
+    var gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(0, t);
+
+    //TODO for each element in array play sound 
+    x.foreach((char)=>{
+      if(char===100){
+        gainNode.gain.setValueAtTime(1, t);
+        t += dot;
+        gainNode.gain.setValueAtTime(0, t);
+        t += dot;
+      }
+      else{
+        gainNode.gain.setValueAtTime(1, t);
+        t += 3 * dot;
+        gainNode.gain.setValueAtTime(0, t);
+        t += dot;
+      }
+    })
+
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    oscillator.start();
+
+    return false;
+  }
   useEffect(()=>{
     
     navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
@@ -61,7 +99,7 @@ function App() {
     }
   },[]) 
   // const transcript = "hellothere"
-  const {
+  let {
     transcript,
     listening,
     resetTranscript,
@@ -78,36 +116,28 @@ function App() {
 
   },[transcript,listening]) 
 
-  // useEffect(()=>{
-  //   transArray.forEach((item, i) => setTimeout(
-  //     () => setCode(item),
-  //     5000, // 5000, 10000, 15000
-  //   ));
-
-  // },[transArray])
-
-
-// console.log({transArray})
 const [mediaItem, setMediaItem] = useState(transArray[0]);
 const [index, setIndex] = useState(0);
 
 useEffect(() => {
-  console.log({transArray})
-  const timerId = setInterval(
-    () => {
-      setIndex((i) => (i + 1) % transArray.length)
-      
-      
-    },
-    5000
-  );
-  return () => clearInterval(timerId);
-}, [transArray]);
+  if(stillListening){
+          
+        console.log({stillListening})
+        const timerId = setInterval(
+          () => {
+            setIndex((i) => (i + 1) % transArray.length)
+            console.log({index})
+          },
+          5000
+        );
+        return () => clearInterval(timerId);
+  }
+}, [transArray, index]);
 
 let doIt=(x)=>{
   let p =[];
-  console.log({x})
-  if(x === undefined){return 0}else{
+  console.log(typeof(x))
+  if(x !== undefined){
   let y = morseCode[x.toUpperCase()].split('').join(' ').split('')
   y.map((i)=> {
     switch (i) {
@@ -132,7 +162,9 @@ let doIt=(x)=>{
 setPattern(p)
   return p
 }
+
 useEffect(() => {
+  
   if(transArray.length>1){
   setMediaItem(transArray[index]);
   doIt(transArray[index])
@@ -141,17 +173,14 @@ useEffect(() => {
 }, [index,transArray]);
 
 
-useEffect(()=>{
-  console.log(mediaItem)
-  if(mediaItem!== undefined){
-  
-  }
-},[])
 
 let reset=()=>{
+  transcript='';
+  setIndex(0)
+  resetTranscript();
   setTransArray([]);
+  console.log("just set trans array to: "+transArray)
   setPattern([]);
-  SpeechRecognition.resetTranscript()
 }
 
   var info, playMorseCode, playMorseStr, sleep, start;
@@ -238,36 +267,52 @@ const ListenAlert=(props)=>{
 const TextModal=(props)=>{
   return(
     <div onClick={()=>{
+      transcript='';
+      setIndex(0)
+      resetTranscript();
+      setTransArray([]);
+      console.log("just set trans array to: "+transcript);
+      setPattern([]);
       SpeechRecognition.stopListening()
       setStillListening(false)
     }} className={`textModal z-10 mt-10 max-w-screen w-screen h-[500px] absolute top-0 left-0   transition-opacity ${props.stillListening?"opacity-1 pointer-events-auto delay-500":"opacity-0 pointer-events-none delay-0"}`}>
-       <div className="textcontent  rounded-[2.5rem] border-neutral-500 border-2 z-10 bg-white w-auto h-full box-border text-2xl md:text-5xl m-5 md:m-12 text-center p-10">
-        <div className="text ">
+       <div className={`textcontent  rounded-[2.5rem]  z-10 bg-white w-auto h-full box-border text-2xl md:text-5xl m-5 md:m-12 text-center p-10 `}>
+          <div className="text border-1 flex flex-col border-black h-1/2 max-h-1/2 ">
           <p className='text-lg'>
             { 
             props.listening ?
               "Listening...":""
-            }    
+            }  
+            { 
+            !props.listening && props.transcript!=="" && index>-1?
+            <span>transcribing...</span>:""
+            }     
             { 
             !props.listening && props.transcript===""?
             <span>...Didn't quite catch that <br/> Please try again</span>:""
             }   
           </p>
-          <p className=' bg-neutral-300 w-fit p-3 pb-5 rounded-sm'>
+          <p className=' bg-neutral-300 w-fit p-3 pb-5 rounded-sm flex-1 overflow-y-scroll'>
           {props.transcript}
           </p>
-          <p>
-         {mediaItem?.toUpperCase()}
-         </p>
-         <p>
-         {morseCode[mediaItem?.toUpperCase()]}
-         </p>
-         <p className=' text-sm' >Pattern: {pattern.map((char)=>{if(char===100){return(<p className=' text-xs'>Low</p>)}else{return(<p className=' text-xs'>High</p>)}})}</p>
+          {}
+          
+         {/* <p className=' text-sm' >Pattern: {pattern.map((char)=>{if(char===100){return(<p className=' text-xs'>Low</p>)}else{return(<p className=' text-xs'>High</p>)}})}</p> */}
           
             {/* {!listening && transcript!==''?start(props.transcript):null} */}
           </div>
-          </div> 
+          <div className="stuff flex w-fill justify-between font-bold text-5xl pt-10">
+            <div className='text-center flex-1'>
+              <p className='text-xs font-normal'>Letter</p>
+              {transcript?mediaItem?.toUpperCase():null}
+            </div>
+            <div className='text-center flex-1'>
+              <p className='text-xs font-normal'>Code</p>
+              {transcript?morseCode[mediaItem?.toUpperCase()]:null}
+            </div>
           </div>
+        </div> 
+      </div>
   )
 }
 
@@ -324,15 +369,20 @@ const TextModal=(props)=>{
         </p>  
 
         <div className={styles.grid}>
-          {}
           <div onClick={()=>{
             if(listening){
-              SpeechRecognition.stopListening()
+              reset();
+              SpeechRecognition.stopListening();
             }else{
-              setTries(1)
               setStillListening(true);
-              SpeechRecognition.startListening()
-            }}}  
+              transcript='';
+              resetTranscript();
+              SpeechRecognition.startListening();
+            }
+            
+            console.log({transcript})
+          }}  
+            
             className={`
             m-[] p-14 text-center  text-ground border-[.5rem] 
             rounded-full transition-all duration-500 
