@@ -301,8 +301,8 @@ const TextModal=(props)=>{
         </div> 
         <h1 className={styles.title}>
         <p className='text-sm flex flex-col gap-2 items-center font-normal'>Research for Impact <br /><span className='text-sm'>(R4I) </span>
-</p> 
-        Vibrotactile morse code Application
+        </p> 
+          Vibrotactile Telemetry using Morse Code
         </h1>
         <p className='text-center my-1 text-sm md:text-base md:my-5 hidden md:block'>
           R4I prototype application to demonstrate <br /> vibrotactile communication 
