@@ -50,13 +50,17 @@ function App() {
   const [morseC, setMorseC] =useState('')
   const [pattern,setPattern] = useState([])
   const [transArray, setTransArray] =useState([])
+  const [mediaItem, setMediaItem] = useState(transArray[0]);
+  const [index, setIndex] = useState(0);
+
   let ctx = new (window.AudioContext || window.webkitAudioContext)();
   // var ctx = new AudioContext();
-  var dot = 1.2 / 15; 
+  var dot = 1.2 / 15;  
 
   function playSound(x){
     var t = ctx.currentTime;
-
+    console.log({x})
+    console.log(typeof(x))
     var oscillator = ctx.createOscillator();
     oscillator.type = "sine";
     oscillator.frequency.value = 600;
@@ -65,20 +69,26 @@ function App() {
     gainNode.gain.setValueAtTime(0, t);
 
     //TODO for each element in array play sound 
-    x.foreach((char)=>{
-      if(char===100){
-        gainNode.gain.setValueAtTime(1, t);
-        t += dot;
-        gainNode.gain.setValueAtTime(0, t);
-        t += dot;
+    let string = morseCode[mediaItem?.toUpperCase()].split("")
+    string.forEach(function(letter) {
+      switch(letter) {
+          case ".":
+              gainNode.gain.setValueAtTime(1, t);
+              t += dot;
+              gainNode.gain.setValueAtTime(0, t);
+              t += dot;
+              break;
+          case "-":
+              gainNode.gain.setValueAtTime(1, t);
+              t += 3 * dot;
+              gainNode.gain.setValueAtTime(0, t);
+              t += dot;
+              break;
+          case " ":
+              t += 7 * dot;
+              break;
       }
-      else{
-        gainNode.gain.setValueAtTime(1, t);
-        t += 3 * dot;
-        gainNode.gain.setValueAtTime(0, t);
-        t += dot;
-      }
-    })
+  })
 
 
     oscillator.connect(gainNode);
@@ -88,6 +98,7 @@ function App() {
 
     return false;
   }
+  
   useEffect(()=>{
     
     navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
@@ -98,7 +109,7 @@ function App() {
     navigator.vibrate(1000); 
     }
   },[]) 
-  // const transcript = "hellothere"
+
   let {
     transcript,
     listening,
@@ -116,8 +127,6 @@ function App() {
 
   },[transcript,listening]) 
 
-const [mediaItem, setMediaItem] = useState(transArray[0]);
-const [index, setIndex] = useState(0);
 
 useEffect(() => {
   if(stillListening){
@@ -165,11 +174,16 @@ setPattern(p)
 
 useEffect(() => {
   
-  if(transArray.length>1){
   setMediaItem(transArray[index]);
   doIt(transArray[index])
-  // console.log(transArray[index])
+  navigator.vibrate(pattern);
+  console.log({pattern})
+  console.log(typeof(pattern))
+  if(pattern.length>0){
+   playSound(pattern)
   }
+  // playSound(pattern)
+  // console.log(transArray[index])
 }, [index,transArray]);
 
 
@@ -325,6 +339,14 @@ const TextModal=(props)=>{
         <h1 className='text-white text-5xl text-center font-bold'>Browser <br /> Does not support <br />STP</h1>
       </div>
       <div onClick={()=>{
+         transcript='';
+         setIndex(0)
+         resetTranscript();
+         setTransArray([]);
+         console.log("just set trans array to: "+transcript);
+         setPattern([]);
+         SpeechRecognition.stopListening()
+         setStillListening(false)
         SpeechRecognition.stopListening()
         setStillListening(false)
       }} className={`hidder w-screen h-screen bg-black z-10  absolute top-0 left-0 transition-opacity ${stillListening?"opacity-40 pointer-events-auto":"opacity-0 pointer-events-none"}`}></div>
