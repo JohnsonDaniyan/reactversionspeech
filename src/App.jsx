@@ -180,7 +180,7 @@ useEffect(() => {
   console.log({pattern})
   console.log(typeof(pattern))
   if(pattern.length>0){
-   playSound(pattern)
+   //playSound(pattern)
   }
   // playSound(pattern)
   // console.log(transArray[index])
