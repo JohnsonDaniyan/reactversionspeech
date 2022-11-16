@@ -197,73 +197,7 @@ let reset=()=>{
   setPattern([]);
 }
 
-  var info, playMorseCode, playMorseStr, sleep, start;
-  
-    info = function(msg) {
-      console.log(msg);
-    };
-  
-   
-    // console.log(morseCode["A"].split('').join(' ').split(''))
-    sleep = function(msec) {
-        return setTimeout(function() {
-        }, msec); 
-    }; 
-  
-    playMorseStr = function(str) {
-      return Promise.each(str.split(''), function(c) {
-        return playMorseCode(c).then(function() {
-          return sleep(1000);
-        });
-      });
-    };
-  
-    playMorseCode = function(code) {
-      // console.log({code})
-      return new Promise(function(resolve, reject) {
-        var pattern;
-        if (code.length !== 1) {
-          return reject("\"" + code + "\".length must be 1");
-        }
-        if (!/^[a-z]$/i.test(code)) {
-          return reject("\"" + code + "\": A-Z is ok");
-        }
-        code = code.toUpperCase();
-        pattern = morseCode[code].split('').join(' ').split('').map(function(i) {
-          switch (i) {
-            case '.':
-              return 100;
-            case '-':
-              return 300;
-            case ' ':
-              return 300;
-          }
-        });
-        // console.log({pattern})
-        info(code + ": " + morseCode[code]);
-        navigator.vibrate(pattern);
-        return setTimeout(function() {
-          return resolve();
-        }, pattern.reduce(function(a, b) {
-          return a + b;
-        }));
-      });
-    };
-  
-    start = function(str) {
-      
-      info("play \"" + str + "\"");
-      return playMorseStr(str).then(function() {
-        return sleep(1000);
-      }).then(function() {
-        return start(str);
-      })["catch"](function(err) {
-        info(err);
-        return sleep(3000).then(function() {
-          return start(str);
-        }); 
-      });
-    };
+ 
   
 //       console.log("start");
 //       if (typeof (typeof navigator !== "undefined" && navigator !== null ? navigator.vibrate : void 0) !== 'function') {
@@ -377,13 +311,14 @@ const TextModal=(props)=>{
          
         <p className={styles.description}> 
           <span className='md:inline inline-block '>
+            <code className={styles.code}><span className='icon-screen-smartphone'></span></code>
             <span className='block md:inline-block'>
             Tap anywhere on the  
             </span>
           </span>
           <span className='md:inline md:my-2 md:m-0 flex flex-col items-center'>
-          <code className={styles.code}><span className='icon-screen-smartphone'></span></code>
-          <span className=''>
+          
+          <span className=' border-t-[1px] mt-2 pt-2 border-ground'>
           screen to enable Microphone
           </span>
           <code className={styles.code}><span className="icon-microphone" ></span></code>
