@@ -354,7 +354,7 @@ const TextModal=(props)=>{
       <main  className={styles.main}> 
         <img src={walking} alt="" className="absolute md:h-[200px]  h-[100px] bottom-0 left-0 grayscale " />
         <img src={walking2} alt="" className="absolute md:h-[200px] h-[100px]  bottom-0 grayscale  right-0" />
-        <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 p-1 md:p-5 transition-colors">
+        <div className="flex justify-between items-center w-screen absolute top-0 cursor-pointer text-lg md:text-xl hover:bg-neutral-200 px-5 py-0 md:p-5 transition-colors">
           
           <span className='icon-eye flex-1'></span>
           
