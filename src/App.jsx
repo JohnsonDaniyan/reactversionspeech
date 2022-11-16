@@ -187,7 +187,6 @@ useEffect(() => {
 }, [index,transArray]);
 
 
-
 let reset=()=>{
   transcript='';
   setIndex(0)
