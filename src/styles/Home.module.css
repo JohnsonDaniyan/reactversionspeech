@@ -1,17 +1,22 @@
 .container {
   padding: 0 2rem;
+  background-color: white;
 }
-
+body{
+  background-color: black;
+}
 .main {
-  max-height: 100vh; 
-  height:100vh;
+  background-color: white;
   box-sizing: border-box;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: flex; 
+  flex-grow: 1;
   align-items: center;
+  flex-direction: column;
+  justify-content:space-between;
+  align-items: center;
+  position: relative;
+  padding: 0 1.25rem;
+  padding-top: 6rem;
 }
 
 .footer {
@@ -57,10 +62,15 @@
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
+  background-color: #F6F6F6;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  margin: 2rem 0 ;
 }
 
 .code {
-  background: #e2e2e2;
+  background: #838383;
+  color: white;
   border-radius: 5px;
   padding: 0.5rem;
   font-size: 1.1rem;
@@ -126,27 +136,23 @@
   .title{
     font-size:2rem;
   }
+  .main{
+    padding-top: 5rem;
+  
+  }
   .description {
     font-size:.8rem
   }
   .grid{
-    margin: 2rem 0;
+    margin:0;
   }
   .code{
     margin: 1rem auto;
     display: flex;
   }
 }
-
-@media (prefers-color-scheme: dark) {
-  .card,
-  .footer {
-    border-color: #222;
-  }
-  .code {
-    background: #111;
-  }
-  .logo img {
-    filter: invert(1);
+@media screen and (display-mode: standalone) {
+  .main {
+    margin-top: env(safe-area-inset-top);
   }
 }
