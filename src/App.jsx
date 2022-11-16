@@ -318,8 +318,8 @@ const TextModal=(props)=>{
           </span>
           <span className='md:inline md:my-2 md:m-0 flex flex-col items-center'>
           
-          <span className=' border-t-[1px] mt-2 pt-2 border-ground'>
-          screen to enable Microphone
+          <span className=' border-t-[1px] md:border-none mt-2 pt-2 border-ground'>
+          {" "}screen to enable Microphone
           </span>
           <code className={styles.code}><span className="icon-microphone" ></span></code>
           </span>
