@@ -53,51 +53,51 @@ function App() {
   const [mediaItem, setMediaItem] = useState(transArray[0]);
   const [index, setIndex] = useState(0);
 
-  let ctx = new (window.AudioContext || window.webkitAudioContext)();
-  // var ctx = new AudioContext();
-  var dot = 1.2 / 15;  
+  // let ctx = new (window.AudioContext || window.webkitAudioContext)();
+  // // var ctx = new AudioContext();
+  // var dot = 1.2 / 15;  
 
-  function playSound(x){
-    var t = ctx.currentTime;
-    console.log({x})
-    console.log(typeof(x))
-    var oscillator = ctx.createOscillator();
-    oscillator.type = "sine";
-    oscillator.frequency.value = 600;
+  // function playSound(x){
+  //   var t = ctx.currentTime;
+  //   console.log({x})
+  //   console.log(typeof(x))
+  //   var oscillator = ctx.createOscillator();
+  //   oscillator.type = "sine";
+  //   oscillator.frequency.value = 600;
 
-    var gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0, t);
+  //   var gainNode = ctx.createGain();
+  //   gainNode.gain.setValueAtTime(0, t);
 
-    //TODO for each element in array play sound 
-    let string = morseCode[mediaItem?.toUpperCase()].split("")
-    string.forEach(function(letter) {
-      switch(letter) {
-          case ".":
-              gainNode.gain.setValueAtTime(1, t);
-              t += dot;
-              gainNode.gain.setValueAtTime(0, t);
-              t += dot;
-              break;
-          case "-":
-              gainNode.gain.setValueAtTime(1, t);
-              t += 3 * dot;
-              gainNode.gain.setValueAtTime(0, t);
-              t += dot;
-              break;
-          case " ":
-              t += 7 * dot;
-              break;
-      }
-  })
+  //   //TODO for each element in array play sound 
+  //   let string = morseCode[mediaItem?.toUpperCase()].split("")
+  //   string.forEach(function(letter) {
+  //     switch(letter) {
+  //         case ".":
+  //             gainNode.gain.setValueAtTime(1, t);
+  //             t += dot;
+  //             gainNode.gain.setValueAtTime(0, t);
+  //             t += dot;
+  //             break;
+  //         case "-":
+  //             gainNode.gain.setValueAtTime(1, t);
+  //             t += 3 * dot;
+  //             gainNode.gain.setValueAtTime(0, t);
+  //             t += dot;
+  //             break;
+  //         case " ":
+  //             t += 7 * dot;
+  //             break;
+  //     }
+  // })
 
 
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
+  //   oscillator.connect(gainNode);
+  //   gainNode.connect(ctx.destination);
 
-    oscillator.start();
+  //   oscillator.start();
 
-    return false;
-  }
+  //   return false;
+  // }
   
   useEffect(()=>{
     
